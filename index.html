@@ -11,48 +11,62 @@
   <p id="appointmentInfo"></p>
 
   <script>
-    // Function to generate a random integer between min and max (inclusive)
+    let lastTwoAppointments = [];
+
     function getRandomInt(min, max) {
       return Math.floor(Math.random() * (max - min + 1)) + min;
     }
 
-    // Function to generate a random time with intervals of :15, :30, and :45
     function generateRandomTime() {
       const hours = 9 + getRandomInt(0, 7); // Random hour between 9 and 5
       const minutes = [0, 15, 30, 45][getRandomInt(0, 3)]; // Random minute interval
-      return `${hours}:${minutes.toString().padStart(2, '0')}`;
+      const amOrPm = hours < 12 ? 'AM' : 'PM';
+      const formattedHours = hours % 12 === 0 ? 12 : hours % 12;
+      return `${formattedHours}:${minutes.toString().padStart(2, '0')} ${amOrPm}`;
     }
 
-    // Function to generate a random day between Monday and Friday
     function generateRandomDay() {
       const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
       return days[getRandomInt(0, 4)];
     }
 
-    // Function to generate a random name
     function generateRandomName() {
-      const names = ['Alice', 'Bob', 'Charlie', 'David', 'Emma', 'Frank', 'Grace', 'Henry', 'Ivy', 'Jack'];
+      const names = ['Alice', 'Bob', 'Charlie', 'Dan', 'Emma', 'Frank', 'Grace', 'Henry', 'Ina', 'Jack', 'Larry', 'Mary', 'Nancy', 'Steve','Ronald'];
       return names[getRandomInt(0, names.length - 1)];
     }
 
-    // Function to generate a random place in the greater Albany, NY area
     function generateRandomPlace() {
       const places = ['Albany', 'Troy', 'Schenectady', 'Colonie', 'Latham', 'Guilderland', 'Rensselaer', 'Clifton Park', 'East Greenbush'];
       return places[getRandomInt(0, places.length - 1)];
     }
 
-    // Function to generate an appointment
     function generateAppointment() {
-      const time = generateRandomTime();
-      const day = generateRandomDay();
-      const name = generateRandomName();
-      const place = generateRandomPlace();
+      let time, day, name, place;
+      do {
+        time = generateRandomTime();
+      } while (lastTwoAppointments.some(appointment => appointment.time === time));
+
+      do {
+        day = generateRandomDay();
+      } while (lastTwoAppointments.some(appointment => appointment.day === day));
+
+      do {
+        name = generateRandomName();
+      } while (lastTwoAppointments.some(appointment => appointment.name === name));
+
+      do {
+        place = generateRandomPlace();
+      } while (lastTwoAppointments.some(appointment => appointment.place === place));
+
+      lastTwoAppointments.push({ time, day, name, place });
+      if (lastTwoAppointments.length > 2) {
+        lastTwoAppointments.shift();
+      }
 
       const appointmentInfo = `Appointment for ${name} at ${time} on ${day}, at ${place}`;
       document.getElementById('appointmentInfo').textContent = appointmentInfo;
     }
 
-    // Adding event listener to the button
     document.getElementById('generateButton').addEventListener('click', generateAppointment);
   </script>
 </body>
