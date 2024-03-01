@@ -4,17 +4,22 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Random Appointment Generator</title>
-</head>
- <style>
+  <style>
     body {
       font-family: 'math', sans-serif;
       text-align: center;
       margin-top: 50px;
     }
-    h1 {
-      color: #333;
+    #namesList, #placesList {
+      width: 200px;
+      margin: 0 auto;
+      margin-bottom: 20px;
     }
-    button {
+    #namesList textarea, #placesList textarea {
+      width: 100%;
+      height: 100px;
+    }
+        button {
       padding: 10px 20px;
       background-color: #007bff;
       color: #fff;
@@ -24,15 +29,38 @@
       font-size: 16px;
       margin-bottom: 20px;
     }
-    p {
-      font-size: 18px;
-      color: #555;
-    }
   </style>
+</head>
 <body>
   <h1>Random Appointment Generator</h1>
   <button id="generateButton">Generate Appointment</button>
-  <p id="appointmentInfo"></p>
+    <p id="appointmentInfo"></p>
+  <div id="namesList">
+    <h3>Editable List of Names:</h3>
+    <textarea id="namesTextArea">Alice
+Bob
+Charlie
+David
+Emma
+Frank
+Grace
+Henry
+Ivy
+Jack</textarea>
+  </div>
+  <div id="placesList">
+    <h3>Editable List of Places:</h3>
+    <textarea id="placesTextArea">Albany
+Troy
+Schenectady
+Colonie
+Latham
+Guilderland
+Rensselaer
+Clifton Park
+East Greenbush</textarea>
+  </div>
+
 
   <script>
     let lastTwoAppointments = [];
@@ -55,12 +83,14 @@
     }
 
     function generateRandomName() {
-      const names = ['Alice', 'Bob', 'Charlie', 'Dan', 'Emma', 'Frank', 'Grace', 'Henry', 'Ina', 'Jack', 'Larry', 'Mary', 'Nancy', 'Steve','Ronald'];
+      const namesTextArea = document.getElementById('namesTextArea');
+      const names = namesTextArea.value.split('\n').filter(name => name.trim() !== '');
       return names[getRandomInt(0, names.length - 1)];
     }
 
     function generateRandomPlace() {
-      const places = ['Albany', 'Troy', 'Schenectady', 'Colonie', 'Latham', 'Guilderland', 'Rensselaer', 'Clifton Park', 'East Greenbush'];
+      const placesTextArea = document.getElementById('placesTextArea');
+      const places = placesTextArea.value.split('\n').filter(place => place.trim() !== '');
       return places[getRandomInt(0, places.length - 1)];
     }
 
